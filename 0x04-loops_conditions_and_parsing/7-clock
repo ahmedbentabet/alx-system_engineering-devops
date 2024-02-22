@@ -1,0 +1,26 @@
+#!/usr/bin/env bash
+
+# Initialize variables
+hour=0
+minute=0
+
+# Define the while loop
+while [ "$hour" -le 12 ]; do
+    echo "Hour: $hour"
+    
+    while [ "$minute" -lt 60 ]; do
+        echo "$minute"
+        ((minute++))
+
+        # Limit output to the first 70 lines
+        if [ "$hour" -eq 12 ] && [ "$minute" -eq 59 ]; then
+            break 2
+        elif [ "$minute" -eq 60 ]; then
+            break
+        fi
+    done
+
+    # Increment hour and reset minute for a new hour
+    ((hour++))
+    minute=1
+done | head -n 70
