@@ -1,9 +1,9 @@
 #!/usr/bin/env bash
+# Displays numbers from 1 to 20 with some conditions
 
 # Initialize counter
 counter=1
 
-# Define the while loop
 while [ "$counter" -le 20 ]; do
     case $counter in
         4)
