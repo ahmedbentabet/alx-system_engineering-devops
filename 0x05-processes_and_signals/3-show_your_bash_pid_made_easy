@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+
+# Finding processes whose name contains the word "bash"
+for pid in /proc/*/cmdline; do
+    if grep -q '\<bash\>' "$pid"; then
+        # Extracting PID and process name
+        current_pid=$(awk -F/ '{print $3}' <<< "$pid")
+        process_name=$(tr -d '\0' < "$pid" | awk '{print $NF}')
+        
+        echo "$current_pid $process_name"
+    fi
+done
