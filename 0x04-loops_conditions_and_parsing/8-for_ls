@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+# displays the content of the current directory with conditions
+
+# Loop through files in the current directory
+for file in *
+do
+	# Extract the part of the name after the first dash
+	name_after_dash=$(echo "$file" | cut -d '-' -f 2)
+	# Display the name in a list format
+	echo "$name_after_dash"
+done
