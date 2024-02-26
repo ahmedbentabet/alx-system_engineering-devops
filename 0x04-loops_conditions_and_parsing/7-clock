@@ -2,7 +2,7 @@
 
 # Initialize variables
 hour=0
-minute=0
+minute=1
 
 # Define the while loop
 while [ "$hour" -le 12 ]; do
