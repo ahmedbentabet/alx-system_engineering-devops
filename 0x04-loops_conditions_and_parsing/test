@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+# Example: Print numbers 1 to 5 using a while loop
+count=1
+until [ $count -gt 5 ]; do
+    echo $count
+    ((count++))
+done
