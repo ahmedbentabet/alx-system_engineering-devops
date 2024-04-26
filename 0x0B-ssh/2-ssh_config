@@ -1,0 +1,9 @@
+# SSH client configuration
+# This configuration file specifies the settings for the SSH client.
+
+# The following configuration applies to all hosts.
+Host *
+    # Use the private key located at ~/.ssh/school for authentication.
+    IdentityFile ~/.ssh/school
+    # Disable password authentication, forcing the use of the specified private key.
+    PasswordAuthentication no
