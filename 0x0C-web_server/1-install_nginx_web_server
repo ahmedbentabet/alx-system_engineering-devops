@@ -10,12 +10,12 @@ apt-get install -y nginx
 # Step 3: Create a new configuration file for Nginx
 cat << 'EOF' > /etc/nginx/sites-available/default
 server {
-    listen 80;             # Listen for incoming requests on port 80
-    root /var/www/html;    # Serve files from the /var/www/html directory
-    index index.html;      # Serve the index.html file when a directory is requested
-    location / {
-        try_files $uri $uri/ =404; # Try to serve the requested file, or return a 404 error
-    }
+	listen 80;             # Listen for incoming requests on port 80
+	root /var/www/html;    # Serve files from the /var/www/html directory
+	index index.html;
+	location / {
+		try_files $uri $uri/ =404;    # Try to serve the requested file, or return a 404 error
+	}
 }
 EOF
 

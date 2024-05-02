@@ -6,9 +6,9 @@ apt-get update
 apt-get install -y nginx
 
 one_line="index index.html;"
-multiple_lines="index index.html;\\n location /redirect_me {\\n return 301 https://www.youtube.com/watch?v=QH2-TGUlwu4;\\n }"
+multiple_lines="index index.html;\n	location /redirect_me {\n		return 301 https://www.youtube.com/watch?v=QH2-TGUlwu4;\\n	}"
 
 sudo sed -i "s|${one_line}|${multiple_lines}|g" /etc/nginx/sites-enabled/default
 
-# Reload the Nginx service to apply the new configuration
-service reload nginx
+# restart the Nginx service to apply the new configuration
+service nginx restart
