@@ -10,5 +10,8 @@ multiple_lines="index index.html;\n	location /redirect_me {\n		return 301 https:
 
 sudo sed -i "s|${one_line}|${multiple_lines}|g" /etc/nginx/sites-enabled/default
 
+# Create the index.html file with the content "Hello World!"
+echo "Hello World!" > /var/www/html/index.html
+
 # restart the Nginx service to apply the new configuration
 service nginx restart
