@@ -8,13 +8,13 @@ apt-get install -y nginx
 # Create a backup of the default Nginx configuration file
 cp /etc/nginx/sites-available/default /etc/nginx/sites-available/default.bak
 
+# Create the index.html file with the content "Hello World!"
+echo "Hello World!" > /var/www/html/index.html
 
 one_line="index index.html;"
 multiple_lines="index index.html;\\n location /redirect_me {\\n return 301 https://www.youtube.com/watch?v=QH2-TGUlwu4;\\n }"
 
-# Use the sed command to replace the line "index index.html;" in the default Nginx configuration file with the lines stored in the $multiple_lines variable
-# The -i option modifies the file in-place, and the s/// command performs the substitution
-# The / characters are used as delimiters for the substitution pattern
+# Use the sed command to replace the line "index index.html;" with the lines stored in the $multiple_lines variable
 sudo sed -i "s/${one_line}/|${multiple_lines}/" /etc/nginx/sites-available/default
 
 # Remove the symbolic link in the /etc/nginx/sites-enabled/ directory, which was pointing to the old configuration
@@ -24,4 +24,4 @@ rm /etc/nginx/sites-enabled/default
 ln -s /etc/nginx/sites-available/default /etc/nginx/sites-enabled/
 
 # Reload the Nginx service to apply the new configuration
-service reload nginx
+service nginx reload
