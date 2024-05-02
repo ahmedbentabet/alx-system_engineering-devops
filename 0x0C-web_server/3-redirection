@@ -1,1 +1,28 @@
 #!/usr/bin/env bash
+
+# Updates the package lists for the latest version of packages and their dependencies
+apt-get update
+
+# Installs the Nginx web server package if it's not already installed
+apt-get install -y nginx
+
+# Creates a backup of the default Nginx configuration file
+cp /etc/nginx/sites-available/default /etc/nginx/sites-available/default.bak
+
+
+one_line="index index.html;"
+multiple_lines="index index.html;\\n location /redirect_me {\\n return 301 https://www.youtube.com/watch?v=QH2-TGUlwu4;\\n }"
+
+# Uses the sed command to replace the line "index index.html;" in the default Nginx configuration file with the lines stored in the $multiple_lines variable
+# The -i option modifies the file in-place, and the s/// command performs the substitution
+# The / characters are used as delimiters for the substitution pattern
+sudo sed -i "s/${one_line}/|${multiple_lines}/" /etc/nginx/sites-available/default
+
+# Removes the symbolic link in the /etc/nginx/sites-enabled/ directory, which was pointing to the old configuration
+rm /etc/nginx/sites-enabled/default
+
+# Creates a new symbolic link from the modified configuration file in /etc/nginx/sites-available/default to the /etc/nginx/sites-enabled/ directory
+ln -s /etc/nginx/sites-available/default /etc/nginx/sites-enabled/
+
+# Reloads the Nginx service to apply the new configuration
+service reload nginx
