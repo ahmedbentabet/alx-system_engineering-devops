@@ -5,9 +5,6 @@
 apt-get update
 apt-get install -y nginx
 
-# Create a backup of the default Nginx configuration file
-cp /etc/nginx/sites-available/default /etc/nginx/sites-available/default.bak
-
 one_line="index index.html;"
 multiple_lines="index index.html;\\n location /redirect_me {\\n return 301 https://www.youtube.com/watch?v=QH2-TGUlwu4;\\n }"
 
