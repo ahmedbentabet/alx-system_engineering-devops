@@ -4,12 +4,14 @@ exec { 'Update':
 	provider => shell,
 	command  => 'apt-get update',
 	path     => '/usr/bin',
+	before   => Exec['Nginx installation'],
 }
 
 exec { 'Nginx installation':
 	provider => shell,
 	command  => 'apt-get -y install nginx',
 	path     => '/usr/bin',
+	before   => Exec['Header'],
 }
 
 exec { 'Header':
