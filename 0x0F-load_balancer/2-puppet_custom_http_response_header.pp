@@ -1,22 +1,24 @@
 # Puppet manifest to configure Nginx with custom HTTP header
 
-# Ensure Nginx is installed
-package { 'nginx':
-  ensure => installed,
+exec { 'Update':
+  provider => shell,
+  command  => 'sudo apt-get update',
+  before   => Exec['Nginx installation'],
 }
 
-# Define the custom HTTP header in the Nginx configuration file
-file { '/etc/nginx/sites-available/default':
-  ensure  => present,
-  content => "\
-  server {
-      add_header X-Served-By ${hostname};
-  }",
-  notify  => Service['nginx'],  # Notify Nginx service to restart when the file changes
+exec { 'Nginx installation':
+  provider => shell,
+  command  => 'sudo apt-get -y install nginx',
+  before   => Exec['Header'],
 }
 
-# Ensure Nginx service is running and enabled
-service { 'nginx':
-  ensure  => running,
-  enable  => true,
+exec { 'Header':
+  provider => shell,
+  command  => 'sudo sed -i "s#index index.html;#index index.html;\n\tadd_header X-Served-By $(hostname);#" /etc/nginx/sites-available/default',
+  before   => Exec['Restart'],
+}
+
+exec { 'Restart':
+  provider => shell,
+  command  => 'sudo service nginx restart',
 }
