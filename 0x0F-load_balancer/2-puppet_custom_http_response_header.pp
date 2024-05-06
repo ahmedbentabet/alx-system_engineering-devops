@@ -2,21 +2,21 @@
 
 exec { 'Update':
 	provider => shell,
-	command  => 'apt-get update',
+	command  => 'sudo apt-get update',
 	path     => '/usr/bin',
 }
 
 exec { 'Nginx installation':
 	provider => shell,
-	command  => 'apt-get -y install nginx',
+	command  => 'sudo apt-get -y install nginx',
 	path     => '/usr/bin',
 }
 
-file_line { 'add HTTP header':
-	ensure => 'present',
-	path   => '/etc/nginx/sites-available/default',
-	after  => 'index index.html;',
-	line   => 'add_header X-Served-By $hostname;'
+exec { 'Header':
+	provider => shell,
+	command  => 'sed -i "/index index\.html;/a add_header X-Served-By $(hostname);" /etc/nginx/sites-available/default',
+	path     => ['/usr/bin', '/bin'],
+	before   => Exec['Restart'],
 }
 
 exec { 'Restart':
