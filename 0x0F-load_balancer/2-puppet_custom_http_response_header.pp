@@ -1,34 +1,43 @@
-# Installing an Nginx server with custom HTTP header
+# Install and configure an Nginx server using Puppet instead of Bash
 
-exec { 'Update':
-	provider => shell,
-	command  => 'apt-get update',
-	path     => '/usr/bin',
-	before   => Exec['Nginx installation'],
+# Install Nginx
+package { 'nginx':
+  ensure => installed,
 }
 
-exec { 'Nginx installation':
-	provider => shell,
-	command  => 'apt-get -y install nginx',
-	path     => '/usr/bin',
-	before   => Exec['Header'],
-}
-
-exec { 'Header':
-	provider => shell,
-	command  => 'sed -i "/index index\.html;/a add_header X-Served-By $(hostname);" /etc/nginx/sites-available/default',
-	path     => ['/usr/bin', '/bin'],
-	before   => Exec['Restart'],
-}
-
-exec { 'Restart':
-	provider => shell,
-	command  => 'service nginx restart',
-	path     => '/usr/sbin:/usr/bin:/sbin:/bin',
-}
-
+# Ensure Nginx service is running
 service { 'nginx':
-	ensure  => 'running',
-	enable  => true,
-	require => Package['nginx']
+	ensure => running,
+	enable => true,
+	require => Package['nginx'],
+}
+
+# Configure Nginx
+file { '/var/www/html/index.html':
+	content => 'Hello World!',
+	mode    => '0644',
+	require => Package['nginx'],
+}
+
+file { '/etc/nginx/sites-available/default':
+	content => "server {
+		listen 80;
+		root /var/www/html;
+		index index.html;
+		add_header X-Served-By $hostname;
+
+		location / {
+			try_files \$uri \$uri/ =404;
+		}
+	}",
+	mode    => '0644',
+	require => Package['nginx'],
+	notify  => Service['nginx'],
+}
+
+file { '/etc/nginx/sites-enabled/default':
+	ensure  => link,
+	target  => '/etc/nginx/sites-available/default',
+	require => File['/etc/nginx/sites-available/default'],
+	notify  => Service['nginx'],
 }
