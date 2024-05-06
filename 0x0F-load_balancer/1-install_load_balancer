@@ -2,12 +2,12 @@
 # This Bash script automates the installation and configuration of HAProxy on the lb-01 server.
 
 # Install HAProxy
-sudo apt-get update
-sudo apt-get install -y haproxy
+apt-get update
+apt-get install -y haproxy
 
 # Configure HAProxy
 echo "Configuring HAProxy..."
-sudo cat << 'EOF' > /etc/haproxy/haproxy.cfg
+cat << 'EOF' > /etc/haproxy/haproxy.cfg
 frontend http-in
 	bind *:80
 	mode http
@@ -21,14 +21,11 @@ backend web-servers
 EOF
 
 # Restart HAProxy service
-sudo systemctl restart haproxy
-
-# Enable HAProxy service on system startup
-sudo systemctl enable haproxy
+servise haproxy restart
 
 # Print the status of the HAProxy service
 echo "HAProxy service status:"
-sudo systemctl status haproxy
+service haproxy status
 
 # Print the HAProxy configuration file
 echo "HAProxy Configuration File:"
