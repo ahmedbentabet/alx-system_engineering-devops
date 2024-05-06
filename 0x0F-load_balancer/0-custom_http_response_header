@@ -1,0 +1,58 @@
+#!/usr/bin/env bash
+# This script installs and configures the Nginx web server on an Ubuntu machine
+
+# Update the list of available packages
+apt-get update
+
+# Install the Nginx package
+apt-get install -y nginx
+
+# Create a new configuration file for Nginx
+cat << 'EOF' > /etc/nginx/sites-available/default
+server {
+	listen 80;             # Listen for incoming requests on port 80
+	root /var/www/html;    # Serve files from the /var/www/html directory
+	index index.html;      # Serve the index.html file when a directory is requested
+
+	add_header X-Served-By $hostname;  # Add custom header X-Served-By with the hostname of the server
+
+	location / {
+		try_files $uri $uri/ =404; # Try to serve the requested file, or return a 404 error
+	}
+	location /redirect_me {
+		return 301 google.com;
+	}
+
+	error_page 404 /errors/404.html;
+	location = /errors/404.html {
+		internal;
+	}
+}
+EOF
+
+# Create the index.html file with the content "Hello World!"
+echo "Hello World!" > /var/www/html/index.html
+
+# Create the custom 404 page
+mkdir -p /var/www/html/errors
+echo "Ceci n'est pas une page" > /var/www/html/errors/404.html
+
+# Remove the default Nginx configuration file
+rm /etc/nginx/sites-enabled/default
+
+# Create a link to the new configuration file
+ln -s /etc/nginx/sites-available/default /etc/nginx/sites-enabled/
+
+# Restart the Nginx service
+service nginx restart
+
+# Check if Nginx is listening on port 80
+netstat -lntp | grep -q ':80 .*nginx'
+LISTEN_STATUS=$?
+
+# Print a message based on the listening status
+if [ $LISTEN_STATUS -eq 0 ]; then
+	echo "Nginx is listening on port 80"
+else
+	echo "Nginx is not listening on port 80"
+fi
