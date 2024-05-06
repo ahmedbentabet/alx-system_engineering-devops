@@ -16,8 +16,8 @@ frontend http-in
 backend web-servers
 	balance roundrobin
 	mode http
-	server 376780-web-01 54.236.53.157:80
-	server 376780-web-02 52.87.216.90:80
+	server 376780-web-01 54.236.53.157:80 check
+	server 376780-web-02 52.87.216.90:80 check
 EOF
 
 # Restart HAProxy service
