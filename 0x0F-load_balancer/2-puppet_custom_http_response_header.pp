@@ -12,9 +12,11 @@ exec { 'Nginx installation':
 	path     => '/usr/bin',
 }
 
-exec {'HTTP header':
-	command => 'sed -i "25i\	add_header X-Served-By \$hostname;" /etc/nginx/sites-available/default',
-	provider => 'shell'
+exec { 'Header':
+	provider => shell,
+	command  => 'sed -i "/index index\.html;/a add_header X-Served-By $(hostname);" /etc/nginx/sites-available/default',
+	path     => ['/usr/bin', '/bin'],
+	before   => Exec['Restart'],
 }
 
 exec { 'Restart':
