@@ -1,5 +1,5 @@
 #!/bin/bash/env bash
 # Using what you did for task #0, make your fix short and sweet.
-service nginx stop >/dev/null 2>&1
 ln -sf /etc/nginx/sites-available/default /etc/nginx/sites-enabled/default
 service nginx restart
+rm /run/nginx.pid
