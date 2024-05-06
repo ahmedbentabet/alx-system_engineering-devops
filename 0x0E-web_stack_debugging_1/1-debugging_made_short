@@ -1,11 +1,5 @@
 #!/bin/bash/env bash
 # Using what you did for task #0, make your fix short and sweet.
-
-# Ensure Nginx is not running
 service nginx stop >/dev/null 2>&1
-
-# Create a symbolic link for the default Nginx configuration
 ln -sf /etc/nginx/sites-available/default /etc/nginx/sites-enabled/default
-
-# Restart the Nginx service to apply configuration changes
 service nginx restart
