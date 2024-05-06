@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# This Bash script automates the installation and configuration of HAProxy on the lb-01 server.
 
 # Install HAProxy
 sudo apt-get update
