@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+# This script automates the fix for ensuring Nginx listens on port 80
+
+# Create a symbolic link for the default Nginx configuration
+ln -sf /etc/nginx/sites-available/default /etc/nginx/sites-enabled/default
+
+# Restart the Nginx service to apply configuration changes
+service nginx restart
