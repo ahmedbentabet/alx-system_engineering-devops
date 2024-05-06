@@ -9,18 +9,9 @@ package { 'nginx':
 file { '/etc/nginx/sites-available/default':
   ensure  => present,
   content => "\
-server {
-    listen 80;
-    server_name localhost;
-
-    # Custom HTTP header
-    add_header X-Served-By ${hostname};
-
-    location / {
-        root /var/www/html;
-        index index.html index.htm;
-    }
-}",
+  server {
+      add_header X-Served-By ${hostname};
+  }",
   notify  => Service['nginx'],  # Notify Nginx service to restart when the file changes
 }
 
