@@ -16,12 +16,12 @@ frontend http-in
 backend web-servers
 	balance roundrobin
 	mode http
-	server 376780-web-01 54.236.53.157:80 check
-	server 376780-web-02 52.87.216.90:80 check
+	server web-01 54.236.53.157:80
+	server web-02 52.87.216.90:80
 EOF
 
 # Restart HAProxy service
-servise haproxy restart
+service haproxy restart
 
 # Print the status of the HAProxy service
 echo "HAProxy service status:"
