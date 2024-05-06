@@ -1,5 +1,3 @@
-# Installing an Nginx server with custom HTTP header
-
 # Puppet manifest to configure Nginx with custom HTTP header
 
 # Ensure Nginx is installed
@@ -12,8 +10,7 @@ file { '/etc/nginx/sites-available/default':
   ensure  => present,
   content => "\
 server {
-    # Custom HTTP header
-    add_header X-Served-By $hostname;
+    add_header X-Served-By ${hostname};
 }",
   notify  => Service['nginx'],  # Notify Nginx service to restart when the file changes
 }
