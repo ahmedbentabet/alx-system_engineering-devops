@@ -1,0 +1,36 @@
+#!/usr/bin/env bash
+# This script displays information about subdomains of a given domain.
+
+display_subdomain_info()
+{
+	domain="$1"
+	subdomain="$2"
+	url="$2"."$1"
+	# Use 'dig' command to query DNS for the specified subdomain of the domain,
+	# and 'awk' to extract the fourth column (record type) and fifth column (destination IP address)
+	record_type=$(dig $url | awk '/ANSWER SECTION:/ { getline; print $4 }')
+	destination=$(dig $url | awk '/ANSWER SECTION:/ { getline; print $5 }')
+
+	# Print the subdomain, record type, and destination IP address
+	echo "The subdomain $subdomain is a $record_type record and points to $destination"
+}
+
+main()
+{
+	domain="$1"
+	subdomain="$2"
+
+	# Check if only one argument is provided
+	if [ $# -eq 1 ]; then
+		# Display information for default subdomains: www, lb-01, web-01, and web-02
+		display_subdomain_info "$domain" "www"
+		display_subdomain_info "$domain" "lb-01"
+		display_subdomain_info "$domain" "web-01"
+		display_subdomain_info "$domain" "web-02"
+	else
+		# Display information for the specified subdomain
+		display_subdomain_info "$domain" "$subdomain"
+	fi
+}
+
+main "$@"
