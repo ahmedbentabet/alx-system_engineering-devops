@@ -6,6 +6,7 @@ display_subdomain_info()
 	domain="$1"
 	subdomain="$2"
 	url="$2"."$1"
+
 	# Use 'dig' command to query DNS for the specified subdomain of the domain,
 	# and 'awk' to extract the fourth column (record type) and fifth column (destination IP address)
 	record_type=$(dig $url | awk '/ANSWER SECTION:/ { getline; print $4 }')
