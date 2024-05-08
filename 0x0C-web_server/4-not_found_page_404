@@ -10,12 +10,12 @@ apt-get install -y nginx
 # Create a new configuration file for Nginx
 cat << 'EOF' > /etc/nginx/sites-available/default
 server {
-    listen 80;             # Listen for incoming requests on port 80
-    root /var/www/html;    # Serve files from the /var/www/html directory
-    index index.html;      # Serve the index.html file when a directory is requested
-    location / {
-        try_files $uri $uri/ =404; # Try to serve the requested file, or return a 404 error
-    }
+	listen 80;             # Listen for incoming requests on port 80
+	root /var/www/html;    # Serve files from the /var/www/html directory
+	index index.html;      # Serve the index.html file when a directory is requested
+	location / {
+		try_files $uri $uri/ =404; # Try to serve the requested file, or return a 404 error
+	}
 	location /redirect_me {
 		return 301 google.com;
 	}
@@ -49,7 +49,7 @@ LISTEN_STATUS=$?
 
 # Print a message based on the listening status
 if [ $LISTEN_STATUS -eq 0 ]; then
-    echo "Nginx is listening on port 80"
+	echo "Nginx is listening on port 80"
 else
-    echo "Nginx is not listening on port 80"
+	echo "Nginx is not listening on port 80"
 fi
