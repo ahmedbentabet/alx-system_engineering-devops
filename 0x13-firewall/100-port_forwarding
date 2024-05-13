@@ -1,4 +1,4 @@
-iptables --table nat \
+sudo iptables --table nat \
 	--append PREROUTING \
 	--protocol tcp \
 	--dport 8080 \
