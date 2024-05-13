@@ -1,6 +1,1 @@
-sudo iptables --table nat \
-	--append PREROUTING \
-	--protocol tcp \
-	--dport 8080 \
-	--jump REDIRECT \
-	--to-port 80
+iptables --table nat --append PREROUTING --protocol tcp --dport 8080 --jump REDIRECT --to-port 80
