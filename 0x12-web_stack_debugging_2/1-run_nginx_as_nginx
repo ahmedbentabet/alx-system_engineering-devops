@@ -1,0 +1,24 @@
+#!/usr/bin/env bash
+# This script is used to configure Nginx to run as the 'nginx' user
+# and listen on all active IPs on port 8080
+
+# pdate the Nginx configuration file(s) to run Nginx as the 'nginx' user
+sed -i 's/^user .*/user nginx;/' /etc/nginx/nginx.conf
+
+# Step 2: Update the Nginx configuration file(s) to listen on all active IPs on port 8080
+sed -i 's/listen 80;/listen 8080;/' /etc/nginx/sites-available/default
+
+# Step 3: Check if Nginx is running and reload the configuration
+if [ "$(pgrep nginx)" ]; then
+    nginx -s reload
+else
+    service nginx start
+fi
+
+# Step 4: Verify that Nginx is running as the 'nginx' user
+echo "Verifying Nginx user:"
+ps auxff | grep ngin[x]
+
+# Step 5: Verify that Nginx is listening on port 8080
+echo "Verifying Nginx listening port:"
+nc -z 0 8080 ; echo $?
