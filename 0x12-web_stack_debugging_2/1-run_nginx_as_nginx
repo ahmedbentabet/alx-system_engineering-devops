@@ -14,11 +14,3 @@ if [ "$(pgrep nginx)" ]; then
 else
     service nginx start
 fi
-
-# Verify that Nginx is running as the 'nginx' user
-echo "Verifying Nginx user:"
-ps auxff | grep ngin[x]
-
-# Verify that Nginx is listening on port 8080
-echo "Verifying Nginx listening port:"
-nc -z 0 8080 ; echo $?
