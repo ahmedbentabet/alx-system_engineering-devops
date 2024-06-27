@@ -5,7 +5,7 @@ exec { 'fix-for-nginx':
 }
 
 # Restart Nginx to apply changes
-service { 'nginx':
-  ensure    => 'running',
-  subscribe => Exec['fix-for-nginx'],
+exec { 'restart-nginx':
+  command     => '/usr/sbin/service nginx restart',
+  refreshonly => true,
 }
