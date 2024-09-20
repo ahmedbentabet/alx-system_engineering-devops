@@ -1,39 +1,40 @@
 #!/usr/bin/python3
-"""Gather data from an API"""
+"""
+This module retrieves and displays an employee's TODO list progress
+from a REST API based on their employee ID.
+"""
 import requests
 import sys
 
 
+def get_employee_todo_progress(employee_id):
+    # Base URL for the API
+    base_url = "https://jsonplaceholder.typicode.com/"
+
+    # Get employee information
+    employee_response = requests.get(f"{base_url}users/{employee_id}")
+    employee_data = employee_response.json()
+    employee_name = employee_data.get('name')
+
+    # Get TODO list for the employee
+    todos_response = requests.get(f"{base_url}users/{employee_id}/todos")
+    todos_data = todos_response.json()
+
+    # Calculate progress
+    total_tasks_number = len(todos_data)
+    completed_tasks = [task for task in todos_data if task.get('completed')]
+    completed_tasks_number = len(completed_tasks)
+
+    # Display progress
+    print(f"Employee {employee_name} is done with tasks"
+          f"({completed_tasks_number}/{total_tasks_number}):")
+
+    # Display completed tasks
+    for task in todos_data:
+        if task.get('completed'):
+            print(f"\t {task.get('title')}")
+
+
 if __name__ == "__main__":
-    EMPLOYEE_ID = sys.argv[1]
-    userId_in_todos = {'userId': EMPLOYEE_ID}
-    userId_in_users = {'id': EMPLOYEE_ID}
-
-    r1 = requests.get(
-                    "https://jsonplaceholder.typicode.com/todos",
-                    params=userId_in_todos
-    )
-    r2 = requests.get(
-                    "https://jsonplaceholder.typicode.com/users",
-                    params=userId_in_users
-    )
-
-    r2_EMPLOYEE_dict = r2.json()[0]
-    EMPLOYEE_NAME = r2_EMPLOYEE_dict['name']
-
-    r1_list_of_dict = r1.json()
-    NUMBER_OF_DONE_TASKS = 0
-    TOTAL_NUMBER_OF_TASKS = 0
-    DONE_TASKS_TITLE = []
-
-    for dict in r1_list_of_dict:
-        if dict['completed'] is True:
-            NUMBER_OF_DONE_TASKS += 1
-            DONE_TASKS_TITLE.append(dict['title'])
-
-        TOTAL_NUMBER_OF_TASKS += 1
-
-    print(f"Employee {EMPLOYEE_NAME} is done with tasks"
-          f"({NUMBER_OF_DONE_TASKS}/{TOTAL_NUMBER_OF_TASKS}):")
-    for done_task_title in DONE_TASKS_TITLE:
-        print(f"\t {done_task_title}")
+    employee_id = sys.argv[1]
+    get_employee_todo_progress(employee_id)
